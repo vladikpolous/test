@@ -1,0 +1,642 @@
+databaseChangeLog:
+    - changeSet:
+        id: 1
+        author: alex.laskovskyi
+        changes:
+            - createTable:
+                tableName: users
+                columns:
+                    - column:
+                        name: id
+                        type: bigint
+                        autoIncrement: true
+                        constraints:
+                            primaryKey: true
+                            nullable: false
+                    - column:
+                        name: name
+                        type: varchar(100)
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: middle_name
+                        type: varchar(100)
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: surname
+                        type: varchar(100)
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: email
+                        type: varchar(255)
+                        constraints:
+                            unique: true
+                            nullable: false
+                    - column:
+                        name: email_parent1
+                        type: varchar(255)
+                        constraints:
+                            nullable: true
+                    - column:
+                        name: email_parent2
+                        type: varchar(255)
+                        constraints:
+                            nullable: true
+                    - column:
+                        name: password
+                        type: varchar(255)
+                        constraints:
+                            nullable: false
+                    - column:
+                        name: classroom
+                        type: varchar(5)
+                        constraints:
+                            nullable: true
+                    - column:
+                        name: created
+                        type: timestamp
+                        constraints:
+                            nullable: false
+                        defaultValue: now()
+                    - column:
+                        name: updated
+                        type: timestamp
+                        constraints:
+                            nullable: false
+                        defaultValue: now()
+
+    - changeSet:
+        id: 2
+        author: alex.laskovskyi
+        changes:
+            - createTable:
+                tableName: roles
+                columns:
+                    - column:
+                        name: id
+                        type: bigint
+                        autoIncrement: true
+                        constraints:
+                            primaryKey: true
+                            nullable: false
+                    - column:
+                        name: name
+                        type: varchar(100)
+                        constraints:
+                            unique: true
+                            nullable: false
+                    - column:
+                        name: created
+                        type: timestamp
+                        constraints:
+                            nullable: false
+                        defaultValue: now()
+                    - column:
+                        name: updated
+                        type: timestamp
+                        constraints:
+                            nullable: false
+                        defaultValue: now()
+
+    - changeSet:
+          id: 3
+          author: alex.laskovskyi
+          changes:
+            - createTable:
+                tableName: user_roles
+                columns:
+                    - column:
+                        name: id_user
+                        type: bigint
+                        constraints:
+                            foreignKeyName: fk_id_user_in_user_roles
+                            references: users(id)
+                            nullable: false
+                    - column:
+                        name: id_role
+                        type: bigint
+                        constraints:
+                            foreignKeyName: fk_id_role_in_user_roles
+                            references: roles(id)
+                            nullable: false
+
+    - changeSet:
+          id: 4
+          author: alex.laskovskyi
+          changes:
+              - createTable:
+                  tableName: visits
+                  columns:
+                      - column:
+                          name: id
+                          type: bigint
+                          autoIncrement: true
+                          constraints:
+                              primaryKey: true
+                              nullable: false
+                      - column:
+                          name: id_user
+                          type: bigint
+                          constraints:
+                              foreignKeyName: fk_id_user_in_visits
+                              references: users(id)
+                              nullable: false
+                      - column:
+                          name: date_of_arrival
+                          type: timestamp
+                          constraints:
+                              nullable: false
+                          defaultValue: now()
+                      - column:
+                          name: date_of_leave
+                          type: timestamp
+                          constraints:
+                              nullable: true
+                          defaultValue: now()
+
+    - changeSet:
+          id: 5
+          author: alex.laskovskyi
+          changes:
+              - createTable:
+                  tableName: books
+                  columns:
+                      - column:
+                          name: id
+                          type: bigint
+                          autoIncrement: true
+                          constraints:
+                              primaryKey: true
+                              nullable: false
+                      - column:
+                          name: id_user
+                          type: bigint
+                          constraints:
+                              foreignKeyName: fk_id_user_in_books
+                              references: users(id)
+                              nullable: false
+                      - column:
+                          name: book_name
+                          type: varchar(255)
+                          constraints:
+                              nullable: false
+                      - column:
+                          name: date_of_taking
+                          type: timestamp
+                          constraints:
+                              nullable: false
+                          defaultValue: now()
+
+    - changeSet:
+        id: 6
+        author: alex.laskovskyi
+        changes:
+            - insert:
+                tableName: roles
+                columns:
+                    - column:
+                        name: id
+                        value: 1
+                    - column:
+                        name: name
+                        value: ROLE_USER
+                    - column:
+                        name: created
+                        value: 2021-06-02 16:50:14
+                    - column:
+                        name: updated
+                        value: 2021-06-02 16:50:14
+            - insert:
+                tableName: roles
+                columns:
+                    - column:
+                        name: id
+                        value: 2
+                    - column:
+                        name: name
+                        value: ROLE_ADMIN
+                    - column:
+                        name: created
+                        value: 2021-06-02 16:50:14
+                    - column:
+                        name: updated
+                        value: 2021-06-02 16:50:14
+
+            - insert:
+                tableName: users
+                columns:
+                    - column:
+                        name: id
+                        value: 1
+                    - column:
+                        name: name
+                        value: Александр
+                    - column:
+                        name: middle_name
+                        value: Александрович
+                    - column:
+                        name: surname
+                        value: Ласковский
+                    - column:
+                        name: email
+                        value: laskovskiu2017@gmail.com
+                    - column:
+                        name: email_parent1
+                        value: null
+                    - column:
+                        name: email_parent2
+                        value: null
+                    - column:
+                        name: password
+                        value: $2a$04$ZEpGNaV1nWdW6kgSy.jiBOmyod.aFcyEhwgwkNuVXTYOktfBpIY7S
+                    - column:
+                        name: classroom
+                        value: null
+                    - column:
+                        name: created
+                        value: 2021-06-02 16:50:14
+                    - column:
+                        name: updated
+                        value: 2021-06-02 16:50:14
+            - insert:
+                tableName: users
+                columns:
+                    - column:
+                        name: id
+                        value: 2
+                    - column:
+                        name: name
+                        value: Владислав
+                    - column:
+                        name: middle_name
+                        value: Юрьевич
+                    - column:
+                        name: surname
+                        value: Полоус
+                    - column:
+                        name: email
+                        value: vladikxxxxpolous@gmail.com
+                    - column:
+                        name: email_parent1
+                        value: null
+                    - column:
+                        name: email_parent2
+                        value: null
+                    - column:
+                        name: password
+                        value: $2a$04$ZEpGNaV1nWdW6kgSy.jiBOmyod.aFcyEhwgwkNuVXTYOktfBpIY7S
+                    - column:
+                        name: classroom
+                        value: 11-Б
+                    - column:
+                        name: created
+                        value: 2021-06-02 16:50:14
+                    - column:
+                        name: updated
+                        value: 2021-06-02 16:50:14
+            - insert:
+                  tableName: users
+                  columns:
+                      - column:
+                            name: id
+                            value: 3
+                      - column:
+                            name: name
+                            value: test
+                      - column:
+                            name: middle_name
+                            value: test
+                      - column:
+                            name: surname
+                            value: test
+                      - column:
+                            name: email
+                            value: test@gmail.com
+                      - column:
+                            name: email_parent1
+                            value: null
+                      - column:
+                            name: email_parent2
+                            value: null
+                      - column:
+                            name: password
+                            value: $2a$04$ZEpGNaV1nWdW6kgSy.jiBOmyod.aFcyEhwgwkNuVXTYOktfBpIY7S
+                      - column:
+                            name: classroom
+                            value: null
+                      - column:
+                            name: created
+                            value: 2021-06-02 16:50:14
+                      - column:
+                            name: updated
+                            value: 2021-06-02 16:50:14
+
+            - insert:
+                tableName: user_roles
+                columns:
+                    - column:
+                        name: id_user
+                        value: 1
+                    - column:
+                        name: id_role
+                        value: 1
+            - insert:
+                tableName: user_roles
+                columns:
+                    - column:
+                        name: id_user
+                        value: 1
+                    - column:
+                        name: id_role
+                        value: 2
+            - insert:
+                tableName: user_roles
+                columns:
+                    - column:
+                        name: id_user
+                        value: 2
+                    - column:
+                        name: id_role
+                        value: 1
+
+            - insert:
+                tableName: visits
+                columns:
+                    - column:
+                        name: id
+                        value: 1
+                    - column:
+                        name: id_user
+                        value: 1
+                    - column:
+                        name: date_of_arrival
+                        value: 2021-06-02 7:50:14
+                    - column:
+                        name: date_of_leave
+                        value: 2021-06-02 13:50:14
+            - insert:
+                tableName: visits
+                columns:
+                    - column:
+                        name: id
+                        value: 2
+                    - column:
+                        name: id_user
+                        value: 1
+                    - column:
+                        name: date_of_arrival
+                        value: 2021-06-03 7:50:14
+                    - column:
+                        name: date_of_leave
+                        value: 2021-06-03 13:50:14
+            - insert:
+                tableName: visits
+                columns:
+                    - column:
+                        name: id
+                        value: 3
+                    - column:
+                        name: id_user
+                        value: 1
+                    - column:
+                        name: date_of_arrival
+                        value: 2021-06-04 7:50:14
+                    - column:
+                        name: date_of_leave
+                        value: 2021-06-04 13:50:14
+            - insert:
+                tableName: visits
+                columns:
+                    - column:
+                        name: id
+                        value: 4
+                    - column:
+                        name: id_user
+                        value: 2
+                    - column:
+                        name: date_of_arrival
+                        value: 2021-06-02 7:50:14
+                    - column:
+                        name: date_of_leave
+                        value: 2021-06-02 13:50:14
+            - insert:
+                tableName: visits
+                columns:
+                    - column:
+                        name: id
+                        value: 5
+                    - column:
+                        name: id_user
+                        value: 2
+                    - column:
+                        name: date_of_arrival
+                        value: 2021-06-03 7:50:14
+                    - column:
+                        name: date_of_leave
+                        value: 2021-06-03 13:50:14
+            - insert:
+                tableName: visits
+                columns:
+                    - column:
+                        name: id
+                        value: 6
+                    - column:
+                        name: id_user
+                        value: 2
+                    - column:
+                        name: date_of_arrival
+                        value: 2021-06-04 7:50:14
+                    - column:
+                        name: date_of_leave
+                        value: 2021-06-04 13:50:14
+
+            - insert:
+                tableName: books
+                columns:
+                    - column:
+                        name: id
+                        value: 1
+                    - column:
+                        name: id_user
+                        value: 1
+                    - column:
+                        name: book_name
+                        value: Математика
+                    - column:
+                        name: date_of_taking
+                        value: 2021-06-02 13:50:14
+            - insert:
+                tableName: books
+                columns:
+                    - column:
+                        name: id
+                        value: 2
+                    - column:
+                        name: id_user
+                        value: 1
+                    - column:
+                        name: book_name
+                        value: Физика
+                    - column:
+                        name: date_of_taking
+                        value: 2021-06-03 13:50:14
+            - insert:
+                tableName: books
+                columns:
+                    - column:
+                        name: id
+                        value: 3
+                    - column:
+                        name: id_user
+                        value: 1
+                    - column:
+                        name: book_name
+                        value: Химия
+                    - column:
+                        name: date_of_taking
+                        value: 2021-06-04 13:50:14
+            - insert:
+                tableName: books
+                columns:
+                    - column:
+                        name: id
+                        value: 4
+                    - column:
+                        name: id_user
+                        value: 2
+                    - column:
+                        name: book_name
+                        value: Алгебра
+                    - column:
+                        name: date_of_taking
+                        value: 2021-06-02 13:50:14
+            - insert:
+                tableName: books
+                columns:
+                    - column:
+                        name: id
+                        value: 5
+                    - column:
+                        name: id_user
+                        value: 2
+                    - column:
+                        name: book_name
+                        value: Геометрия
+                    - column:
+                        name: date_of_taking
+                        value: 2021-06-03 13:50:14
+            - insert:
+                tableName: books
+                columns:
+                    - column:
+                        name: id
+                        value: 6
+                    - column:
+                        name: id_user
+                        value: 2
+                    - column:
+                        name: book_name
+                        value: Русский язык
+                    - column:
+                        name: date_of_taking
+                        value: 2021-06-04 13:50:14
+    - changeSet:
+          id: 7
+          author: alex.laskovskyi
+          changes:
+              - insert:
+                    tableName: books
+                    columns:
+                        - column:
+                              name: id
+                              value: 7
+                        - column:
+                              name: id_user
+                              value: 3
+                        - column:
+                              name: book_name
+                              value: Алгебра
+                        - column:
+                              name: date_of_taking
+                              value: 2021-06-02 13:50:14
+              - insert:
+                    tableName: books
+                    columns:
+                        - column:
+                              name: id
+                              value: 8
+                        - column:
+                              name: id_user
+                              value: 3
+                        - column:
+                              name: book_name
+                              value: Геометрия
+                        - column:
+                              name: date_of_taking
+                              value: 2021-06-03 13:50:14
+              - insert:
+                    tableName: books
+                    columns:
+                        - column:
+                              name: id
+                              value: 9
+                        - column:
+                              name: id_user
+                              value: 3
+                        - column:
+                              name: book_name
+                              value: Русский язык
+                        - column:
+                              name: date_of_taking
+                              value: 2021-06-04 13:50:14
+    - changeSet:
+          id: 8
+          author: alex.laskovskyi
+          changes:
+              - insert:
+                    tableName: visits
+                    columns:
+                        - column:
+                              name: id
+                              value: 7
+                        - column:
+                              name: id_user
+                              value: 3
+                        - column:
+                              name: date_of_arrival
+                              value: 2021-06-02 7:50:14
+                        - column:
+                              name: date_of_leave
+                              value: 2021-06-02 13:50:14
+              - insert:
+                    tableName: visits
+                    columns:
+                        - column:
+                              name: id
+                              value: 8
+                        - column:
+                              name: id_user
+                              value: 3
+                        - column:
+                              name: date_of_arrival
+                              value: 2021-06-03 7:50:14
+                        - column:
+                              name: date_of_leave
+                              value: 2021-06-03 13:50:14
+              - insert:
+                    tableName: visits
+                    columns:
+                        - column:
+                              name: id
+                              value: 9
+                        - column:
+                              name: id_user
+                              value: 3
+                        - column:
+                              name: date_of_arrival
+                              value: 2021-06-04 7:50:14
+                        - column:
+                              name: date_of_leave
+                              value: 2021-06-04 13:50:14

@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "spring.liquibase.username",
+      "type": "java.lang.String",
+      "description": "Description for spring.liquibase.username."
+    },
+    {
+      "name": "spring.liquibase.username",
+      "type": "java.lang.String",
+      "description": "Description for spring.liquibase.username."
+    }
+  ] }

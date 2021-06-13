@@ -1,0 +1,326 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="1.0.0" author="alex.laskovskyi">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="middle_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="surname" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="email_parent1" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="email_parent2" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="classroom" type="VARCHAR(5)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.1" author="alex.laskovskyi">
+        <createTable tableName="roles">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.2" author="alex.laskovskyi">
+        <createTable tableName="user_roles">
+            <column name="id_user" type="BIGINT">
+            </column>
+
+            <column name="id_role" type="BIGINT">
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.3" author="alex.laskovskyi">
+        <addForeignKeyConstraint baseColumnNames="id_user"
+                                 baseTableName="user_roles"
+                                 constraintName="fk_user_roles_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet id="1.0.4" author="alex.laskovskyi">
+        <addForeignKeyConstraint baseColumnNames="id_role"
+                                 baseTableName="user_roles"
+                                 constraintName="fk_user_roles_roles"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="roles"/>
+    </changeSet>
+
+    <!--    ПОСЕЩЕНИЯ!!!    -->
+    <changeSet id="1.0.8" author="alex.laskovskyi">
+        <createTable tableName="visits">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="id_user" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="date_of_arrival" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="date_of_leave" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    КНИГИ!!!    -->
+    <changeSet id="1.0.9" author="alex.laskovskyi">
+        <createTable tableName="books">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="id_user" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="book_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="date_of_taking" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.10" author="alex.laskovskyi">
+        <addForeignKeyConstraint baseColumnNames="id_user"
+                                 baseTableName="visits"
+                                 constraintName="fk_user_visits"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet id="1.0.11" author="alex.laskovskyi">
+        <addForeignKeyConstraint baseColumnNames="id_user"
+                                 baseTableName="books"
+                                 constraintName="fk_user_books"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+    <!--    INSERT ROLES    -->
+    <changeSet id="1.0.5" author="alex.laskovskyi">
+        <insert tableName="roles">
+            <column name="name" value="ROLE_USER"/>
+        </insert>
+
+        <insert tableName="roles">
+            <column name="name" value="ROLE_ADMIN"/>
+        </insert>
+    </changeSet>
+
+    <!--    INSERT USERS    -->
+    <changeSet id="1.0.6" author="alex.laskovskyi">
+        <insert tableName="users">
+            <column name="name" value="Александр"/>
+            <column name="middle_name" value="Александрович"/>
+            <column name="surname" value="Ласковский"/>
+            <column name="email" value="laskovskiu2017@gmail.com"/>
+            <column name="password" value="$2a$04$ZEpGNaV1nWdW6kgSy.jiBOmyod.aFcyEhwgwkNuVXTYOktfBpIY7S"/>
+        </insert>
+
+        <insert tableName="users">
+            <column name="name" value="Владислав"/>
+            <column name="middle_name" value="Юрьевич"/>
+            <column name="surname" value="Полоус"/>
+            <column name="email" value="vladikxxxxpolous@gmail.com"/>
+            <column name="password" value="$2a$04$ZEpGNaV1nWdW6kgSy.jiBOmyod.aFcyEhwgwkNuVXTYOktfBpIY7S"/>
+        </insert>
+    </changeSet>
+
+    <!--    INSERT USER_ROLES    -->
+    <changeSet id="1.0.7" author="alex.laskovskyi">
+        <insert tableName="user_roles">
+            <column name="id_user" value="1"/>
+            <column name="id_role" value="1"/>
+        </insert>
+
+        <insert tableName="user_roles">
+            <column name="id_user" value="1"/>
+            <column name="id_role" value="2"/>
+        </insert>
+
+        <insert tableName="user_roles">
+            <column name="id_user" value="1"/>
+            <column name="id_role" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.0.12" author="alex.laskovskyi">
+        <insert tableName="visits">
+            <column name="id_user" value="1"/>
+            <column name="date_of_arrival" value="2021-06-02 7:50:14"/>
+            <column name="date_of_leave" value="2021-06-02 13:50:14"/>
+        </insert>
+
+        <insert tableName="visits">
+            <column name="id_user" value="1"/>
+            <column name="date_of_arrival" value="2021-06-03 7:50:14"/>
+            <column name="date_of_leave" value="2021-06-03 13:50:14"/>
+        </insert>
+
+        <insert tableName="visits">
+            <column name="id_user" value="1"/>
+            <column name="date_of_arrival" value="2021-06-04 7:50:14"/>
+            <column name="date_of_leave" value="2021-06-04 13:50:14"/>
+        </insert>
+
+        <insert tableName="visits">
+            <column name="id_user" value="2"/>
+            <column name="date_of_arrival" value="2021-06-02 7:50:14"/>
+            <column name="date_of_leave" value="2021-06-02 13:50:14"/>
+        </insert>
+
+        <insert tableName="visits">
+            <column name="id_user" value="2"/>
+            <column name="date_of_arrival" value="2021-06-03 7:50:14"/>
+            <column name="date_of_leave" value="2021-06-03 13:50:14"/>
+        </insert>
+
+        <insert tableName="visits">
+            <column name="id_user" value="2"/>
+            <column name="date_of_arrival" value="2021-06-04 7:50:14"/>
+            <column name="date_of_leave" value="2021-06-04 13:50:14"/>
+        </insert>
+
+        <insert tableName="visits">
+            <column name="id_user" value="3"/>
+            <column name="date_of_arrival" value="2021-06-02 7:50:14"/>
+            <column name="date_of_leave" value="2021-06-02 13:50:14"/>
+        </insert>
+
+        <insert tableName="visits">
+            <column name="id_user" value="3"/>
+            <column name="date_of_arrival" value="2021-06-03 7:50:14"/>
+            <column name="date_of_leave" value="2021-06-03 13:50:14"/>
+        </insert>
+
+        <insert tableName="visits">
+            <column name="id_user" value="3"/>
+            <column name="date_of_arrival" value="2021-06-04 7:50:14"/>
+            <column name="date_of_leave" value="2021-06-04 13:50:14"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="1.0.13" author="alex.laskovskyi">
+        <insert tableName="books">
+            <column name="id_user" value="1"/>
+            <column name="book_name" value="Математика"/>
+            <column name="date_of_taking" value="2021-06-02 13:50:14"/>
+        </insert>
+
+        <insert tableName="books">
+            <column name="id_user" value="1"/>
+            <column name="book_name" value="Физика"/>
+            <column name="date_of_taking" value="2021-06-03 13:50:14"/>
+        </insert>
+
+        <insert tableName="books">
+            <column name="id_user" value="1"/>
+            <column name="book_name" value="Химия"/>
+            <column name="date_of_taking" value="2021-06-04 13:50:14"/>
+        </insert>
+
+        <insert tableName="books">
+            <column name="id_user" value="2"/>
+            <column name="book_name" value="Алгебра"/>
+            <column name="date_of_taking" value="2021-06-02 13:50:14"/>
+        </insert>
+
+        <insert tableName="books">
+            <column name="id_user" value="2"/>
+            <column name="book_name" value="Геометрия"/>
+            <column name="date_of_taking" value="2021-06-03 13:50:14"/>
+        </insert>
+
+        <insert tableName="books">
+            <column name="id_user" value="2"/>
+            <column name="book_name" value="Русский язык"/>
+            <column name="date_of_taking" value="2021-06-04 13:50:14"/>
+        </insert>
+
+        <insert tableName="books">
+            <column name="id_user" value="3"/>
+            <column name="book_name" value="Украинский язык"/>
+            <column name="date_of_taking" value="2021-06-02 13:50:14"/>
+        </insert>
+
+        <insert tableName="books">
+            <column name="id_user" value="3"/>
+            <column name="book_name" value="Украинская литература"/>
+            <column name="date_of_taking" value="2021-06-03 13:50:14"/>
+        </insert>
+
+        <insert tableName="books">
+            <column name="id_user" value="3"/>
+            <column name="book_name" value="География"/>
+            <column name="date_of_taking" value="2021-06-04 13:50:14"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
